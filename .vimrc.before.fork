@@ -5,4 +5,4 @@ if has('gui')
 endif
 let g:powerline_symbols = 'fancy'
 
-set foldmethod=syntax
+"set foldmethod=syntax
