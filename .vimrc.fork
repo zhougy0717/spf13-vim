@@ -77,7 +77,12 @@ set cscopetagorder=1 " Search tags at first.
 " Use quickfix window to show the result from cscope.
 set cscopequickfix=s-,c-,d-,i-,t-,e-
 
-set mouse=                 " Disable - Automatically enable mouse usage
+
+if has('gui_running')
+    set mouse=a                " Disable - Automatically enable mouse usage
+else
+    set mouse=                 " Disable - Automatically enable mouse usage
+endif
 set nospell
 
 " Key (re)Mappings {
@@ -103,7 +108,11 @@ set nospell
         let g:neosnippet#snippets_directory .= ', '.g:my_plugin#neosnippet_directory
         "echomsg "get_dir:".string(neosnippet#get_snippets_directory())
         "echomsg "dir:".string(g:neosnippet#snippets_directory)
-endif
+    endif
+
+    if count(g:spf13_bundle_groups, 'snipmate')
+        let g:snippets_dir='~/.vim/bundle/vim-snippets/snippets'
+    endif
 "}
 
 "tags
