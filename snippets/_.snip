@@ -1,0 +1,8 @@
+snippet checkpoint
+abbr checkpoint("...", ...);
+    CHECKPOINT${1:A}("${2}\n"${3});
+
+snippet cpb
+abbr checkpoint("Ben@<date>...", ...);
+    CHECKPOINT${1:A}("`g:snips_author`@`strftime("%Y-%m-%d")`: ${2}", ${3});
+
