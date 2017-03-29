@@ -61,16 +61,15 @@ nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR> " 用空格�
 if WINDOWS()
     nnoremap <F3> :grep /n /s <C-R>=expand("<cword>")<CR> <C-R>=expand("%:e")<CR>
 else
-    let grepcmd = 'nmap <F3> :grep -nw --include=*.<C-R>=expand("%:e")<CR> --exclude-dir=\gen "<C-R>=expand("<cword>")<CR>" -r '
-    execute grepcmd.GetGitRoot()
+    nmap <F3> :grep -nw --exclude-dir=\gen "<C-R>=expand("<cword>")<CR>" --include=*.<C-R>=expand("%:e")<CR> -r ./
     " 用cscope查找光标处单词
-    nnoremap <space>s :cscope find s <C-R>=expand("<cword>")<CR>
-    nnoremap <space>g :cscope find g <C-R>=expand("<cword>")<CR>
-    nnoremap <space>c :cscope find c <C-R>=expand("<cword>")<CR>
-    nnoremap <space>e :cscope find e <C-R>=expand("<cword>")<CR>
-    nnoremap <space>t :cscope find t <C-R>=expand("<cword>")<CR>
-    nnoremap <space>f :cscope find f <C-R>=expand("<cword>")<CR>
-    nnoremap <space>i :cscope find i <C-R>=expand("<cword>")<CR>
+    nnoremap <space>s :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find s <C-R>=expand("<cword>")<CR>
+    nnoremap <space>g :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find g <C-R>=expand("<cword>")<CR>
+    nnoremap <space>c :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find c <C-R>=expand("<cword>")<CR>
+    nnoremap <space>e :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find e <C-R>=expand("<cword>")<CR>
+    nnoremap <space>t :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find t <C-R>=expand("<cword>")<CR>
+    nnoremap <space>f :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find f <C-R>=expand("<cword>")<CR>
+    nnoremap <space>i :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find i <C-R>=expand("<cword>")<CR>
 endif
 nnoremap <leader>cw :botright cwindow<CR>
 
@@ -81,6 +80,9 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-
 set mouse=                 " Disable - Automatically enable mouse usage
 set nospell
 
+" Key (re)Mappings {
+
+" }
 " ctrlp {
     if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
         "nnoremap <silent> <Leader>f :CtrlP<CR>
@@ -93,12 +95,26 @@ set nospell
 
 "Snippet
 "{
-if exists("g:neosnippet#snippets_directory")
-    let s:plugin_directory = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-    let g:my_plugin#neosnippet_directory = simplify(s:plugin_directory."/snippets")
-    " This line will add directory to neosnippet#get_snippets_directory()
-    let g:neosnippet#snippets_directory .= ', '.g:my_plugin#neosnippet_directory
-    "echomsg "get_dir:".string(neosnippet#get_snippets_directory())
-    "echomsg "dir:".string(g:neosnippet#snippets_directory)
+    let g:snips_author = 'Ben'
+    if exists("g:neosnippet#snippets_directory")
+        let s:plugin_directory = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+        let g:my_plugin#neosnippet_directory = simplify(s:plugin_directory."/snippets")
+        " This line will add directory to neosnippet#get_snippets_directory()
+        let g:neosnippet#snippets_directory .= ', '.g:my_plugin#neosnippet_directory
+        "echomsg "get_dir:".string(neosnippet#get_snippets_directory())
+        "echomsg "dir:".string(g:neosnippet#snippets_directory)
 endif
+"}
+
+"tags
+"{
+    set tags=
+    let &tags = &tags . GetGitRoot() . '/scm/phx/tags'
+"}
+
+"neocomplete
+"{
+    "call neocomplete#custom#source('tag', 'disabled', 1)
+    call neocomplete#custom#source('omni', 'disabled', 1)
+    "let g:neocomplete#sources#tags#cache_limit_size=300000000
 "}

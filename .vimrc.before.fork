@@ -4,5 +4,6 @@ if has('gui')
     let g:spf13_no_big_font=1
 endif
 let g:powerline_symbols = 'fancy'
+let g:spf13_no_omni_complete = 1
 
-"set foldmethod=syntax
+let g:spf13_no_fastTabs = 1
