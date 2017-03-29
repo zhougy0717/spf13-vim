@@ -78,7 +78,12 @@ set cscopetagorder=1 " Search tags at first.
 " Use quickfix window to show the result from cscope.
 set cscopequickfix=s-,c-,d-,i-,t-,e-
 
-set mouse=                 " Disable - Automatically enable mouse usage
+
+if has('gui_running')
+    set mouse=a                " Disable - Automatically enable mouse usage
+else
+    set mouse=                 " Disable - Automatically enable mouse usage
+endif
 set nospell
 
 " ctrlp {
@@ -93,12 +98,16 @@ set nospell
 
 "Snippet
 "{
-if exists("g:neosnippet#snippets_directory")
-    let s:plugin_directory = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-    let g:my_plugin#neosnippet_directory = simplify(s:plugin_directory."/snippets")
-    " This line will add directory to neosnippet#get_snippets_directory()
-    let g:neosnippet#snippets_directory .= ', '.g:my_plugin#neosnippet_directory
-    "echomsg "get_dir:".string(neosnippet#get_snippets_directory())
-    "echomsg "dir:".string(g:neosnippet#snippets_directory)
-endif
+    if exists("g:neosnippet#snippets_directory")
+        let s:plugin_directory = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+        let g:my_plugin#neosnippet_directory = simplify(s:plugin_directory."/snippets")
+        " This line will add directory to neosnippet#get_snippets_directory()
+        let g:neosnippet#snippets_directory .= ', '.g:my_plugin#neosnippet_directory
+        "echomsg "get_dir:".string(neosnippet#get_snippets_directory())
+        "echomsg "dir:".string(g:neosnippet#snippets_directory)
+    endif
+
+    if count(g:spf13_bundle_groups, 'snipmate')
+        let g:snippets_dir='~/.vim/bundle/vim-snippets/snippets'
+    endif
 "}
