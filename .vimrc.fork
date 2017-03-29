@@ -48,29 +48,36 @@ function! GetGitRoot()
     return l:gitroot
 endfunction
 
-if !cscope_connection()
-    let cscope_out=GetGitRoot().'/scm/phx/cscope.out'
-    if (!empty(glob(cscope_out)))
-        execute ':cscope add ' . cscope_out
+function! GetPhxRoot()
+    let l:scm = GetGitRoot()
+    if (!empty(glob(l:scm.'/scm')))
+        let l:scm .= '/scm'
     endif
-endif
+    return l:scm.'/phx'
+endfunction
 
-cmap <F7> <C-R>=GetGitRoot()<CR>
 
-nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR> " 用空格键来开关折叠
-if WINDOWS()
-    nnoremap <F3> :grep /n /s <C-R>=expand("<cword>")<CR> <C-R>=expand("%:e")<CR>
-else
-    nmap <F3> :grep -nw --exclude-dir=\gen "<C-R>=expand("<cword>")<CR>" --include=*.<C-R>=expand("%:e")<CR> -r ./
-    " 用cscope查找光标处单词
-    nnoremap <space>s :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find s <C-R>=expand("<cword>")<CR>
-    nnoremap <space>g :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find g <C-R>=expand("<cword>")<CR>
-    nnoremap <space>c :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find c <C-R>=expand("<cword>")<CR>
-    nnoremap <space>e :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find e <C-R>=expand("<cword>")<CR>
-    nnoremap <space>t :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find t <C-R>=expand("<cword>")<CR>
-    nnoremap <space>f :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find f <C-R>=expand("<cword>")<CR>
-    nnoremap <space>i :cd <C-R>=GetGitRoot()<CR>/scm/phx<CR>:cscope find i <C-R>=expand("<cword>")<CR>
-endif
+" Cscope & grep {
+    if !cscope_connection()
+        let cscope_out=GetPhxRoot().'/cscope.out'
+        if (!empty(glob(cscope_out)))
+            execute ':cscope add ' . cscope_out
+        endif
+    endif
+    if WINDOWS()
+        nnoremap <F3> :grep /n /s <C-R>=expand("<cword>")<CR> <C-R>=expand("%:e")<CR>
+    else
+        nmap <F3> :grep -nw --exclude-dir=\gen "<C-R>=expand("<cword>")<CR>" --include=*.<C-R>=expand("%:e")<CR> -r ./
+        " 用cscope查找光标处单词
+        nnoremap <space>s :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find s <C-R>=expand("<cword>")<CR>
+        nnoremap <space>g :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find g <C-R>=expand("<cword>")<CR>
+        nnoremap <space>c :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find c <C-R>=expand("<cword>")<CR>
+        nnoremap <space>e :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find e <C-R>=expand("<cword>")<CR>
+        nnoremap <space>t :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find t <C-R>=expand("<cword>")<CR>
+        nnoremap <space>f :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find f <C-R>=expand("<cword>")<CR>
+        nnoremap <space>i :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find i <C-R>=expand("<cword>")<CR>
+    endif
+" }
 nnoremap <leader>cw :botright cwindow<CR>
 
 set cscopetagorder=1 " Search tags at first.
@@ -86,7 +93,13 @@ endif
 set nospell
 
 " Key (re)Mappings {
-
+    if exists('g:spf13_no_fastTabs')
+        map <C-S-H> gT
+        map <C-S-L> gt
+        map <C-S-N> :tabe<CR>
+    endif
+    nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR> " 用空格键来开关折叠
+    cmap <F7> <C-R>=GetGitRoot()<CR>
 " }
 " ctrlp {
     if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
