@@ -96,7 +96,6 @@ set nospell
     if exists('g:spf13_no_fastTabs')
         map <C-S-H> gT
         map <C-S-L> gt
-        map <C-S-N> :tabe<CR>
     endif
     nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR> " 用空格键来开关折叠
     cmap <F7> <C-R>=GetGitRoot()<CR>
@@ -125,18 +124,21 @@ set nospell
 
     if count(g:spf13_bundle_groups, 'snipmate')
         let g:snippets_dir='~/.vim/bundle/vim-snippets/snippets'
+        imap <C-R><Tab> <Plug>snipMateShow
     endif
 "}
 
 "tags
 "{
     set tags=
-    let &tags = &tags . GetGitRoot() . '/scm/phx/tags'
+    let &tags = &tags . GetPhxRoot() . '/tags'
 "}
 
 "neocomplete
 "{
-    "call neocomplete#custom#source('tag', 'disabled', 1)
-    call neocomplete#custom#source('omni', 'disabled', 1)
-    "let g:neocomplete#sources#tags#cache_limit_size=300000000
+    if count(g:spf13_bundle_groups, 'neocomplete')
+        "call neocomplete#custom#source('tag', 'disabled', 1)
+        call neocomplete#custom#source('omni', 'disabled', 1)
+        "let g:neocomplete#sources#tags#cache_limit_size=300000000
+    endif
 "}
