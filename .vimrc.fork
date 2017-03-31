@@ -49,11 +49,14 @@ function! GetGitRoot()
 endfunction
 
 function! GetPhxRoot()
-    let l:scm = GetGitRoot()
-    if (!empty(glob(l:scm.'/scm')))
-        let l:scm .= '/scm'
+    let l:phx = GetGitRoot()
+    if (!empty(glob(l:phx.'/scm')))
+        let l:phx .= '/scm'
     endif
-    return l:scm.'/phx'
+    if (!empty(glob(l:phx.'/phx')))
+        let l:phx = '/phx'
+    endif
+    return l:phx
 endfunction
 
 
@@ -113,6 +116,7 @@ set nospell
 "Snippet
 "{
     let g:snips_author = 'Ben'
+    let g:spf13_root = '~/.spf13-vim-3'
     if exists("g:neosnippet#snippets_directory")
         let s:plugin_directory = fnamemodify(resolve(expand('<sfile>:p')), ':h')
         let g:my_plugin#neosnippet_directory = simplify(s:plugin_directory."/snippets")
@@ -122,9 +126,14 @@ set nospell
         "echomsg "dir:".string(g:neosnippet#snippets_directory)
     endif
 
-    if count(g:spf13_bundle_groups, 'snipmate')
-        let g:snippets_dir='~/.vim/bundle/vim-snippets/snippets'
-        imap <C-R><Tab> <Plug>snipMateShow
+    let &rtp .= ','.fnamemodify(resolve(expand('%:p')), ':h')
+    if count(g:spf13_bundle_groups, 'neocomplete')
+        "call neocomplete#custom#source('tag', 'disabled', 1)
+        call neocomplete#custom#source('omni', 'disabled', 1)
+        "let g:neocomplete#sources#tags#cache_limit_size=300000000
+    elseif isdirectory(expand("~/.vim/bundle/ultisnips"))
+        let &rtp .= ','.simplify(g:spf13_root."/snippets")
+        echomsg "get_dir:".string(g:spf13_root)
     endif
 "}
 
@@ -140,5 +149,7 @@ set nospell
         "call neocomplete#custom#source('tag', 'disabled', 1)
         call neocomplete#custom#source('omni', 'disabled', 1)
         "let g:neocomplete#sources#tags#cache_limit_size=300000000
+    elseif isdirectory(expand("~/.vim/bundle/ultisnips"))
+
     endif
 "}
