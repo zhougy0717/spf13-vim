@@ -11,4 +11,5 @@ if count(g:spf13_bundle_groups, 'neocomplete')
 endif
 let g:spf13_no_fastTabs = 1
 let g:airline_powerline_fonts=1
+let g:spf13_keep_trailing_whitespace = 1
 "let g:spf13_no_big_font=1
