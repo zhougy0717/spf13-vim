@@ -1,0 +1,7 @@
+snippet checkpoint "checkpoint without auther" b
+CHECKPOINT${1:A}("${2}\n"${3});
+endsnippet
+
+snippet cpb "debug checkpoint with auther" b
+CHECKPOINT${1:A}("`!v g:snips_author`@`!v strftime("%Y-%m-%d")`: ${2}", ${3});
+endsnippet
