@@ -119,7 +119,7 @@ set nospell
     let g:spf13_root = '~/.spf13-vim-3'
     if exists("g:neosnippet#snippets_directory")
         let s:plugin_directory = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-        let g:my_plugin#neosnippet_directory = simplify(s:plugin_directory."/snippets")
+        let g:my_plugin#neosnippet_directory = simplify(s:plugin_directory."/snippets/snippets")
         " This line will add directory to neosnippet#get_snippets_directory()
         let g:neosnippet#snippets_directory .= ', '.g:my_plugin#neosnippet_directory
         "echomsg "get_dir:".string(neosnippet#get_snippets_directory())
