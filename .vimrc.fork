@@ -37,7 +37,7 @@ set noignorecase
 set guifont=Source_Code_Pro_Light:h12:cANSI
 "set guifontwide=NSimsun\:h12
 
-"set foldmethod=syntax
+set foldmethod=marker
 set foldlevelstart=99
 
 function! GetGitRoot()
@@ -54,7 +54,7 @@ function! GetPhxRoot()
         let l:phx .= '/scm'
     endif
     if (!empty(glob(l:phx.'/phx')))
-        let l:phx = '/phx'
+        let l:phx .= '/phx'
     endif
     return l:phx
 endfunction
@@ -152,4 +152,9 @@ set nospell
     elseif isdirectory(expand("~/.vim/bundle/ultisnips"))
 
     endif
+"}
+
+"Vimr UI
+"{
+    hi CursorLine   cterm=NONE ctermbg=darkgrey ctermfg=white guibg=darkred guifg=white
 "}
