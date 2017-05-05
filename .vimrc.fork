@@ -133,7 +133,6 @@ set nospell
         "let g:neocomplete#sources#tags#cache_limit_size=300000000
     elseif isdirectory(expand("~/.vim/bundle/ultisnips"))
         let &rtp .= ','.simplify(g:spf13_root."/snippets")
-        echomsg "get_dir:".string(g:spf13_root)
     endif
 "}
 
