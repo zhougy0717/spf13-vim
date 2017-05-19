@@ -1,4 +1,5 @@
-let g:spf13_bundle_groups=['general', 'programming', 'python', 'javascript', 'html', 'misc',]
+"let g:spf13_bundle_groups=['general', 'programming', 'python', 'javascript', 'html', 'misc',]
+let g:spf13_bundle_groups=['general', 'programming']
 if(has('lua'))
     call add(g:spf13_bundle_groups, "neocomplete")
 endif
@@ -12,3 +13,5 @@ let g:airline_powerline_fonts=1
 let g:spf13_keep_trailing_whitespace = 1
 let g:spf13_no_easyWindows = 1
 "let g:spf13_no_big_font=1
+let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#tagbar#enabled = 0

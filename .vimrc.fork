@@ -7,7 +7,8 @@ else
     colorscheme desert256v2
 endif
 let g:airline_theme = 'dark'
-let g:airline#extensions#tabline#enabled = 1
+
+" set verbosefile=~/profile.log
 
 "----------------------------------------------------------------
 "编码设置
@@ -41,15 +42,16 @@ set foldmethod=marker
 set foldlevelstart=99
 
 function! GetGitRoot()
-    let l:gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-    if l:gitroot !~ "^\/"
-        let l:gitroot = './'
-    endif
-    return l:gitroot
+    "let l:gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+    "if l:gitroot !~ "^\/"
+    "    let l:gitroot = './'
+    "endif
+    "return l:gitroot
 endfunction
+let s:gitroot = GetGitRoot()
 
 function! GetPhxRoot()
-    let l:phx = GetGitRoot()
+    let l:phx = s:gitroot
     if (!empty(glob(l:phx.'/scm')))
         let l:phx .= '/scm'
     endif
@@ -58,27 +60,28 @@ function! GetPhxRoot()
     endif
     return l:phx
 endfunction
+let s:phxroot = GetPhxRoot()
 
 
 " Cscope & grep {
     if !cscope_connection()
-        let cscope_out=GetPhxRoot().'/cscope.out'
+        let cscope_out=s:phxroot.'/cscope.out'
         if (!empty(glob(cscope_out)))
             execute ':cscope add ' . cscope_out
         endif
     endif
     if WINDOWS()
-        nnoremap <F3> :grep /n /s <C-R>=expand("<cword>")<CR> <C-R>=expand("%:e")<CR>
+        nnoremap <F3> :grep /n /s <C-R>=expand("<cword>")<CR> *.<C-R>=expand("%:e")<CR>
     else
         nmap <F3> :grep -nw --exclude-dir=\gen "<C-R>=expand("<cword>")<CR>" --include=*.<C-R>=expand("%:e")<CR> -r ./
         " 用cscope查找光标处单词
-        nnoremap <space>s :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find s <C-R>=expand("<cword>")<CR>
-        nnoremap <space>g :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find g <C-R>=expand("<cword>")<CR>
-        nnoremap <space>c :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find c <C-R>=expand("<cword>")<CR>
-        nnoremap <space>e :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find e <C-R>=expand("<cword>")<CR>
-        nnoremap <space>t :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find t <C-R>=expand("<cword>")<CR>
-        nnoremap <space>f :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find f <C-R>=expand("<cword>")<CR>
-        nnoremap <space>i :cd <C-R>=GetPhxRoot()<CR><CR>:cscope find i <C-R>=expand("<cword>")<CR>
+        nnoremap <space>s :cd <C-R>=s:phxroot<CR><CR>:cscope find s <C-R>=expand("<cword>")<CR>
+        nnoremap <space>g :cd <C-R>=s:phxroot<CR><CR>:cscope find g <C-R>=expand("<cword>")<CR>
+        nnoremap <space>c :cd <C-R>=s:phxroot<CR><CR>:cscope find c <C-R>=expand("<cword>")<CR>
+        nnoremap <space>e :cd <C-R>=s:phxroot<CR><CR>:cscope find e <C-R>=expand("<cword>")<CR>
+        nnoremap <space>t :cd <C-R>=s:phxroot<CR><CR>:cscope find t <C-R>=expand("<cword>")<CR>
+        nnoremap <space>f :cd <C-R>=s:phxroot<CR><CR>:cscope find f <C-R>=expand("<cword>")<CR>
+        nnoremap <space>i :cd <C-R>=s:phxroot<CR><CR>:cscope find i <C-R>=expand("<cword>")<CR>
     endif
 " }
 nnoremap <leader>cw :botright cwindow<CR>
@@ -101,7 +104,7 @@ set nospell
         map <C-S-L> gt
     endif
     nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR> " 用空格键来开关折叠
-    cmap <F7> <C-R>=GetGitRoot()<CR>
+    cmap <F7> <C-R>=s:gitroot<CR>
 " }
 " ctrlp {
     if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
@@ -139,7 +142,7 @@ set nospell
 "tags
 "{
     set tags=
-    let &tags = &tags . GetPhxRoot() . '/tags'
+    let &tags = &tags . s:phxroot . '/tags'
 "}
 
 "neocomplete
@@ -148,12 +151,12 @@ set nospell
         "call neocomplete#custom#source('tag', 'disabled', 1)
         call neocomplete#custom#source('omni', 'disabled', 1)
         "let g:neocomplete#sources#tags#cache_limit_size=300000000
-    elseif isdirectory(expand("~/.vim/bundle/ultisnips"))
+    "elseif isdirectory(expand("~/.vim/bundle/ultisnips"))
 
     endif
 "}
 
 "Vimr UI
 "{
-    hi CursorLine   cterm=NONE ctermbg=darkgrey ctermfg=white guibg=darkred guifg=white
+    hi CursorLine   cterm=NONE ctermbg=darkgrey ctermfg=white
 "}

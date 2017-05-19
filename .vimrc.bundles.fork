@@ -14,7 +14,7 @@
         UnBundle 'bling/vim-bufferline'
         UnBundle 'easymotion/vim-easymotion'
         " Bundle 'jistr/vim-nerdtree-tabs'
-        " Bundle 'flazz/vim-colorschemes'
+        UnBundle 'flazz/vim-colorschemes'
         " Bundle 'mbbill/undotree'
         UnBundle 'nathanaelkane/vim-indent-guides'
         UnBundle 'mhinz/vim-signify'
@@ -28,12 +28,12 @@
 " General Programming {
         if count(g:spf13_bundle_groups, 'programming')
             UnBundle 'scrooloose/syntastic'
-            " Bundle 'tpope/vim-fugitive'
+            " UnBundle 'tpope/vim-fugitive'
             UnBundle 'mattn/webapi-vim'
-            " Bundle 'mattn/gist-vim'
-            " Bundle 'scrooloose/nerdcommenter'
+            " UnBundle 'mattn/gist-vim'
+            " UnBundle 'scrooloose/nerdcommenter'
             UnBundle 'tpope/vim-commentary'
-            UnBundle 'godlygeek/tabular'
+            " UnBundle 'godlygeek/tabular'
             UnBundle 'luochen1990/rainbow'
         endif
 " }
@@ -41,7 +41,7 @@
     if count(g:spf13_bundle_groups, 'misc')
         UnBundle 'rust-lang/rust.vim'
         " Bundle 'tpope/vim-markdown'
-        " Bundle 'spf13/vim-preview'
+        UnBundle 'spf13/vim-preview'
         UnBundle 'tpope/vim-cucumber'
         UnBundle 'cespare/vim-toml'
         UnBundle 'quentindecock/vim-cucumber-align-pipes'
@@ -55,4 +55,13 @@
     else
         Bundle 'SirVer/ultisnips'
     endif
+" }
+" Python {
+    "if count(g:spf13_bundle_groups, 'python')
+        " Pick either python-mode or pyflakes & pydoc
+        " Bundle 'klen/python-mode'
+        "Bundle 'yssource/python.vim'
+        "Bundle 'python_match.vim'
+        UnBundle 'pythoncomplete'
+    "endif
 " }

@@ -208,7 +208,7 @@
         set statusline=%<%f\                     " Filename
         set statusline+=%w%h%m%r                 " Options
         if !exists('g:override_spf13_bundles')
-            set statusline+=%{fugitive#statusline()} " Git Hotness
+            "set statusline+=%{fugitive#statusline()} " Git Hotness
         endif
         set statusline+=\ [%{&ff}/%Y]            " Filetype
         set statusline+=\ [%{getcwd()}]          " Current dir
@@ -551,13 +551,13 @@
     " }
 
     " Ctags {
-        set tags=./tags;/,~/.vimtags
+        "set tags=./tags;/,~/.vimtags
 
-        " Make tags placed in .git/tags file available in all levels of a repository
-        let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-        if gitroot != ''
-            let &tags = &tags . ',' . gitroot . '/.git/tags'
-        endif
+        "" Make tags placed in .git/tags file available in all levels of a repository
+        "let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+        "if gitroot != ''
+            "let &tags = &tags . ',' . gitroot . '/.git/tags'
+        "endif
     " }
 
     " AutoCloseTag {
@@ -1249,3 +1249,4 @@
         endif
     endif
 " }
+
