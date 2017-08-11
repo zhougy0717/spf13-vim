@@ -4,7 +4,11 @@ autocmd! bufwritepost .vimrc* source ~/.vimrc
 if WINDOWS()
     colorscheme desert
 else
-    colorscheme desert256v2
+    if $TERM == "xterm-256color"
+        colorscheme fruit
+    else
+        colorscheme desert256v2
+    endif
 endif
 let g:airline_theme = 'dark'
 
@@ -34,11 +38,18 @@ endif
 " set ambiwidth=double
 
 
-set noignorecase
-set guifont=Source_Code_Pro_Light:h12:cANSI
-"set guifontwide=NSimsun\:h12
+if has("gui_running")
+    if LINUX()
+        set guifont=Source\ Code\ Pro\ for\ Powerline\ Light\ 12
+    else
+        set guifont=Source_Code_Pro_Light:h12:cANSI
+        "set guifontwide=NSimsun\:h12
+    endif
+endif
 
-set foldmethod=marker
+set noignorecase
+
+set foldmethod=syntax
 set foldlevelstart=99
 
 function! GetGitRoot()
