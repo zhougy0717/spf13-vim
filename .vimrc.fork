@@ -5,7 +5,7 @@ if WINDOWS()
     colorscheme desert
 else
     if $TERM == "xterm-256color"
-        colorscheme fruit
+        colorscheme fruity
     else
         colorscheme desert256v2
     endif
@@ -74,28 +74,44 @@ endfunction
 let g:phxroot = GetPhxRoot()
 
 
-" Cscope & grep {
+" cscope & tags{
     if !cscope_connection()
-        let cscope_out=g:phxroot.'/cscope.out'
+        let cscope_dir = expand('%:p')
+        if (empty(glob(cscope_dir)))
+            let cscope_dir = substitute(system('pwd'), '[\n\r]', '', 'g')
+        endif
+        let cscope_out = cscope_dir . '/cscope.out'
+        if (empty(glob(cscope_out)))
+            let cscope_dir = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+            let cscope_out = cscope_dir . '/cscope.out'
+        endif
         if (!empty(glob(cscope_out)))
             execute ':cscope add ' . cscope_out
+            set tags=
+            let &tags = &tags . cscope_dir . '/tags'
+            cmap <F7> <C-R>=cscope_dir<CR>
         endif
     endif
     if WINDOWS()
         nnoremap <F3> :grep /n /s <C-R>=expand("<cword>")<CR> *.<C-R>=expand("%:e")<CR>
     else
-        nmap <F3> :grep -nw --exclude-dir=\gen "<C-R>=expand("<cword>")<CR>" --include=*.<C-R>=expand("%:e")<CR> -r ./
+        nmap <F3> :grep -nw "<C-R>=expand("<cword>")<CR>" --include=*.<C-R>=expand("%:e")<CR> -r <C-R>=cscope_dir<CR>
         " 用cscope查找光标处单词
-        nnoremap <space>s :cd <C-R>=g:phxroot<CR><CR>:cscope find s <C-R>=expand("<cword>")<CR>
-        nnoremap <space>g :cd <C-R>=g:phxroot<CR><CR>:cscope find g <C-R>=expand("<cword>")<CR>
-        nnoremap <space>c :cd <C-R>=g:phxroot<CR><CR>:cscope find c <C-R>=expand("<cword>")<CR>
-        nnoremap <space>e :cd <C-R>=g:phxroot<CR><CR>:cscope find e <C-R>=expand("<cword>")<CR>
-        nnoremap <space>t :cd <C-R>=g:phxroot<CR><CR>:cscope find t <C-R>=expand("<cword>")<CR>
-        nnoremap <space>f :cd <C-R>=g:phxroot<CR><CR>:cscope find f <C-R>=expand("<cword>")<CR>
-        nnoremap <space>i :cd <C-R>=g:phxroot<CR><CR>:cscope find i <C-R>=expand("<cword>")<CR>
+        nnoremap <space>s :cd <C-R>=cscope_dir<CR><CR>:cscope find s <C-R>=expand("<cword>")<CR>
+        nnoremap <space>g :cd <C-R>=cscope_dir<CR><CR>:cscope find g <C-R>=expand("<cword>")<CR>
+        nnoremap <space>c :cd <C-R>=cscope_dir<CR><CR>:cscope find c <C-R>=expand("<cword>")<CR>
+        nnoremap <space>e :cd <C-R>=cscope_dir<CR><CR>:cscope find e <C-R>=expand("<cword>")<CR>
+        nnoremap <space>t :cd <C-R>=cscope_dir<CR><CR>:cscope find t <C-R>=expand("<cword>")<CR>
+        nnoremap <space>f :cd <C-R>=cscope_dir<CR><CR>:cscope find f <C-R>=expand("<cword>")<CR>
+        nnoremap <space>i :cd <C-R>=cscope_dir<CR><CR>:cscope find i <C-R>=expand("<cword>")<CR>
     endif
 " }
 nnoremap <leader>cw :botright cwindow<CR>
+nnoremap <leader>ts :tselect<CR>
+nnoremap <leader>tp :tprevious<CR>
+nnoremap <leader>tn :tnext<CR>
+nnoremap <leader>fn :echo expand('%')<CR>
+nnoremap <leader>fp :echo expand('%:p')<CR>
 
 set cscopetagorder=1 " Search tags at first.
 " Use quickfix window to show the result from cscope.
@@ -115,7 +131,7 @@ set nospell
         map <C-S-L> gt
     endif
     nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR> " 用空格键来开关折叠
-    cmap <F7> <C-R>=g:phxroot<CR>
+    "cmap <F7> <C-R>=g:phxroot<CR>
 " }
 " ctrlp {
     if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
@@ -148,12 +164,6 @@ set nospell
     elseif isdirectory(expand("~/.vim/bundle/ultisnips"))
         let &rtp .= ','.simplify(g:spf13_root."/snippets")
     endif
-"}
-
-"tags
-"{
-    set tags=
-    let &tags = &tags . g:phxroot . '/tags'
 "}
 
 "neocomplete
